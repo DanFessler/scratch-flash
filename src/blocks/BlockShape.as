@@ -153,11 +153,23 @@ public class BlockShape extends Shape {
 
 	private function blockShapeFilters():Array {
 		// filters for command and reporter Block outlines
-		var f:BevelFilter = new BevelFilter(1);
-		f.blurX = f.blurY = 3;
-		f.highlightAlpha = 0.3;
-		f.shadowAlpha = 0.6;
-		return [f];
+		var f1:BevelFilter = new BevelFilter(1);
+		f1.angle = 90;
+		f1.blurX = f1.blurY = 0;
+		f1.highlightColor = 0x000000;
+		f1.highlightAlpha = 0;
+		f1.shadowColor = 0x000000;
+		f1.shadowAlpha = 0.3;
+
+		var f2:DropShadowFilter = new DropShadowFilter(0);
+		f2.angle = 90 + 180;
+		f2.alpha = 0.25;
+		f2.blurX = f2.blurY = 2;
+		f2.color = 0x000000;
+		f2.strength = 2;
+		f2.inner = true;
+
+		return [f1, f2];
 	}
 
 	private function dropFeedbackFilters(forReporter:Boolean):Array {
