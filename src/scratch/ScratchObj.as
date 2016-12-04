@@ -63,7 +63,11 @@ public class ScratchObj extends Sprite {
 	public var volume:Number = 100;
 	public var instrument:int = 0;
 	public var filterPack:FilterPack;
+
 	public var isClone:Boolean;
+	public var cloneCount:Number = 0;
+	public var cloneID:Number = 0;
+	public var parentScratchObj:ScratchObj = null;
 
 	public var img:Sprite; // holds a bitmap or svg object, after applying image filters, scale, and rotation
 	private var lastCostume:ScratchCostume;

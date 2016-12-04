@@ -71,6 +71,7 @@ public class Primitives {
 		primTable["createCloneOf"]		= primCreateCloneOf;
 		primTable["deleteClone"]		= primDeleteClone;
 		primTable["whenCloned"]			= interp.primNoop;
+		primTable["cloneID"]            = primGetCloneID;
 
 		// testing (for development)
 		primTable["NOOP"]				= interp.primNoop;
@@ -205,6 +206,11 @@ public class Primitives {
 		clone.parent.removeChild(clone);
 		app.interp.stopThreadsFor(clone);
 		app.runtime.cloneCount--;
+	}
+
+	private function primGetCloneID(b:Block):Number {
+		var s:ScratchSprite = interp.targetSprite();
+		return s.cloneID;
 	}
 
 }}

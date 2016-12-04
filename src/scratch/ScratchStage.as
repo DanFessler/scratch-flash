@@ -244,6 +244,13 @@ public class ScratchStage extends ScratchObj {
 			}
 		}
 		for each (var c:ScratchSprite in clones) removeChild(c);
+
+		// Each sprite tracks the number of clones it's made, reset that back to zero
+		resetCloneCount();
+	}
+
+	public function resetCloneCount():void {
+		for each (var s:ScratchSprite in sprites()) s.cloneCount = 0;
 	}
 
 	public function watchers():Array {

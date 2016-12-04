@@ -245,6 +245,7 @@ public class Specs {
 		["when I start as a clone",				"h", 6, "whenCloned"],
 		["create clone of %m.spriteOnly",		" ", 6, "createCloneOf"],
 		["delete this clone",					"f", 6, "deleteClone"],
+		["clone #",					            "r", 6, "cloneID"],
 		["-"],
 
 		// control - stage
