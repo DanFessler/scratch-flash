@@ -186,8 +186,7 @@ public class Primitives {
 			app.stagePane.addChild(clone);
 
 		clone.initFrom(proto, true);
-		clone.objName = proto.objName;
-		clone.isClone = true;
+
 		for each (var stack:Block in clone.scripts) {
 			if (stack.op == "whenCloned") {
 				interp.startThreadForClone(stack, clone);
