@@ -133,6 +133,11 @@ public class ScratchSprite extends ScratchObj {
 			// Clones share scripts and sounds with the original sprite.
 			scripts = spr.scripts;
 			sounds = spr.sounds;
+
+			// Keep a reference to the root sprite
+			parentScratchObj = spr.parentScratchObj? spr.parentScratchObj : spr;
+			parentScratchObj.cloneCount++;
+			cloneID = parentScratchObj.cloneCount;
 		} else {
 			for (i = 0; i < spr.scripts.length; i++) scripts.push(spr.scripts[i].duplicate(forClone));
 			sounds = spr.sounds.concat();
