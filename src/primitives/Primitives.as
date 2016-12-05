@@ -186,7 +186,7 @@ public class Primitives {
 		else
 			app.stagePane.addChild(clone);
 
-		clone.initFrom(proto, true);
+		var returnVal:Number = clone.initFrom(proto, true);
 
 		for each (var stack:Block in clone.scripts) {
 			if (stack.op == "whenCloned") {
@@ -195,7 +195,7 @@ public class Primitives {
 		}
 		app.runtime.cloneCount++;
 
-		return app.runtime.cloneCount;
+		return returnVal;
 	}
 
 	private function primDeleteClone(b:Block):void {
