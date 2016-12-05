@@ -63,6 +63,7 @@ public class BlockMenus implements DragClient {
 			if ((op == 'broadcast:') || (op == 'doBroadcastAndWait') || (op == 'whenIReceive')) menuName = 'broadcastInfoMenu';
 			if ((basicMathOps.indexOf(op)) > -1) { menuHandler.changeOpMenu(evt, basicMathOps); return; }
 			if ((comparisonOps.indexOf(op)) > -1) { menuHandler.changeOpMenu(evt, comparisonOps); return; }
+			if (op == 'createCloneOf') { menuHandler.changeBlockType(evt, true, true); return; };
 			if (menuName == null) { menuHandler.genericBlockMenu(evt); return; }
 		}
 		if (ExtensionManager.hasExtensionPrefix(op) && menuHandler.extensionMenu(evt, menuName)) return;
@@ -544,6 +545,21 @@ public class BlockMenus implements DragClient {
 		var m:Menu = new Menu(opMenu, 'changeOp');
 		addGenericBlockItems(m);
 		if (!isInPalette(block)) for each (var op:String in opList) m.addItem(op);
+		showMenu(m);
+	}
+
+	private function changeBlockType(evt:MouseEvent, includeStack:Boolean, includeReporter:Boolean):void {
+		function blockTypeMenu(selection:*):void {
+			if (selection is Function) { selection(); return; }
+			block.changeBlockType(selection);
+		}
+		if (!block) return;
+		var m:Menu = new Menu(blockTypeMenu, 'changeOp');
+		addGenericBlockItems(m);
+		if (!isInPalette(block)) {
+			if (includeStack)       m.addItem('stack',    ' ', true, block.type == ' ');
+			if (includeReporter)    m.addItem('reporter', 'r', true, block.type == 'r');
+		}
 		showMenu(m);
 	}
 

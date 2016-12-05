@@ -127,7 +127,28 @@ public class Block extends Sprite {
 
 		if (color == -1) return; // copy for clone; omit graphics
 
-		var shape:int;
+		initBlockType(type, color);
+		addChildAt(base, 0);
+		setSpec(this.spec, defaultArgs);
+
+		addEventListener(FocusEvent.KEY_FOCUS_CHANGE, focusChange);
+	}
+
+	private function initBlockType(type:String = " ", color:int = 0xD00000):void {
+		isHat = false;
+		isAsyncHat = false;
+		isReporter = false;
+		isTerminal = false;
+
+		isReporter = false;
+		forceAsync = false;
+		isRequester = false;
+
+		indentTop = 2;
+		indentBottom = 3;
+		indentLeft = 4;
+		indentRight = 3;
+
 		if ((type == " ") || (type == "") || (type == "w")) {
 			base = new BlockShape(BlockShape.CmdShape, color);
 			indentTop = 3;
@@ -177,10 +198,6 @@ public class Block extends Sprite {
 		} else {
 			base = new BlockShape(BlockShape.RectShape, color);
 		}
-		addChildAt(base, 0);
-		setSpec(this.spec, defaultArgs);
-
-		addEventListener(FocusEvent.KEY_FOCUS_CHANGE, focusChange);
 	}
 
 	public function setSpec(newSpec:String, defaultArgs:Array = null):void {
@@ -267,6 +284,14 @@ public class Block extends Sprite {
 		}
 		op = newOp;
 		opFunction = null;
+		fixArgLayout();
+	}
+
+	public function changeBlockType(newType:String):void {
+		type = newType;
+		removeChild(base);
+		initBlockType(newType, base.color);
+		addChildAt(base, 0);
 		fixArgLayout();
 	}
 
