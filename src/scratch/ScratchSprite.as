@@ -151,7 +151,7 @@ public class ScratchSprite extends ScratchObj {
 		for each (var c:ScratchCostume in spr.costumes) costumes.push(c.duplicate());
 		currentCostumeIndex = spr.currentCostumeIndex;
 
-		objName = forClone? objName = parentScratchObj.objName + ":" + cloneID : spr.objName;
+		objName = spr.objName;
 		volume = spr.volume;
 		instrument = spr.instrument;
 		filterPack = spr.filterPack.duplicateFor(this);
