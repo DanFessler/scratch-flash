@@ -112,10 +112,11 @@ public class ScratchSprite extends ScratchObj {
 		return dup;
 	}
 
-	public function initFrom(spr:ScratchSprite, forClone:Boolean):void {
+	public function initFrom(spr:ScratchSprite, forClone:Boolean):Number {
 		// Copy all the state from the given sprite. Used by both
 		// the clone block and duplicate().
 		var i:int;
+		var returnVal:Number = null;
 
 		// Copy variables and lists.
 		for (i = 0; i < spr.variables.length; i++) {
@@ -137,7 +138,9 @@ public class ScratchSprite extends ScratchObj {
 			// Keep a reference to the root sprite
 			parentScratchObj = spr.parentScratchObj? spr.parentScratchObj : spr;
 			parentScratchObj.cloneCount++;
+
 			cloneID = parentScratchObj.cloneCount;
+			returnVal = cloneID;
 		} else {
 			for (i = 0; i < spr.scripts.length; i++) scripts.push(spr.scripts[i].duplicate(forClone));
 			sounds = spr.sounds.concat();
@@ -173,6 +176,8 @@ public class ScratchSprite extends ScratchObj {
 		setScratchXY(spr.scratchX, spr.scratchY);
 		setSize(spr.getSize());
 		applyFilters();
+
+		return returnVal;
 	}
 
 	override protected function updateImage():void {

@@ -63,6 +63,7 @@ public class BlockMenus implements DragClient {
 			if ((op == 'broadcast:') || (op == 'doBroadcastAndWait') || (op == 'whenIReceive')) menuName = 'broadcastInfoMenu';
 			if ((basicMathOps.indexOf(op)) > -1) { menuHandler.changeOpMenu(evt, basicMathOps); return; }
 			if ((comparisonOps.indexOf(op)) > -1) { menuHandler.changeOpMenu(evt, comparisonOps); return; }
+			if (op == 'createCloneOf') { menuHandler.changeBlockType(evt, true, true); return; };
 			if (menuName == null) { menuHandler.genericBlockMenu(evt); return; }
 		}
 		if (ExtensionManager.hasExtensionPrefix(op) && menuHandler.extensionMenu(evt, menuName)) return;
@@ -92,7 +93,7 @@ public class BlockMenus implements DragClient {
 		if (menuName == 'spriteOnly') menuHandler.spriteMenu(evt, false, false, false, true, false);
 		if (menuName == 'spriteOrMouse') menuHandler.spriteMenu(evt, true, false, false, false, false);
 		if (menuName == 'location') menuHandler.spriteMenu(evt, true, false, false, false, true);
-		if (menuName == 'spriteOrStage') menuHandler.spriteMenu(evt, false, false, true, false, false);
+		if (menuName == 'spriteOrStage') menuHandler.spriteMenu(evt, false, false, true, true, false);
 		if (menuName == 'touching') menuHandler.spriteMenu(evt, true, true, false, false, false);
 		if (menuName == 'stageOrThis') menuHandler.stageOrThisSpriteMenu(evt);
 		if (menuName == 'stop') menuHandler.stopMenu(evt);
@@ -430,17 +431,13 @@ public class BlockMenus implements DragClient {
 		if (includeRandom) m.addItem(Translator.map('random position'), 'random position');
 		if (includeEdge) m.addItem(Translator.map('edge'), 'edge');
 		m.addLine();
-		if (includeStage) {
-			m.addItem(Translator.map('Stage'), 'Stage');
-			m.addLine();
-		}
-		if (includeSelf && !app.viewedObj().isStage) {
-			m.addItem(Translator.map('myself'), 'myself');
-			m.addLine();
-			spriteNames.push(app.viewedObj().objName);
-		}
+
+		if (includeStage) m.addItem(Translator.map('Stage'), 'Stage');
+		if (includeSelf && !app.viewedObj().isStage) m.addItem(Translator.map('myself'), 'myself');
+		m.addLine();
+
 		for each (var sprite:ScratchSprite in app.stagePane.sprites()) {
-			if (sprite != app.viewedObj()) spriteNames.push(sprite.objName);
+			spriteNames.push(sprite.objName);
 		}
 		spriteNames.sort(Array.CASEINSENSITIVE);
 		for each (var spriteName:String in spriteNames) {
@@ -548,6 +545,21 @@ public class BlockMenus implements DragClient {
 		var m:Menu = new Menu(opMenu, 'changeOp');
 		addGenericBlockItems(m);
 		if (!isInPalette(block)) for each (var op:String in opList) m.addItem(op);
+		showMenu(m);
+	}
+
+	private function changeBlockType(evt:MouseEvent, includeStack:Boolean, includeReporter:Boolean):void {
+		function blockTypeMenu(selection:*):void {
+			if (selection is Function) { selection(); return; }
+			block.changeBlockType(selection);
+		}
+		if (!block) return;
+		var m:Menu = new Menu(blockTypeMenu, 'changeOp');
+		addGenericBlockItems(m);
+		if (!isInPalette(block)) {
+			if (includeStack)       m.addItem('stack',    ' ', true, block.type == ' ');
+			if (includeReporter)    m.addItem('reporter', 'r', true, block.type == 'r');
+		}
 		showMenu(m);
 	}
 

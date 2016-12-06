@@ -174,19 +174,19 @@ public class Primitives {
 		return 1;
 	}
 
-	private function primCreateCloneOf(b:Block):void {
+	private function primCreateCloneOf(b:Block):Number {
 		var objName:String = interp.arg(b, 0);
 		var proto:ScratchSprite = app.stagePane.spriteNamed(objName);
 		if ('_myself_' == objName) proto = interp.activeThread.target;
-		if (!proto) return;
-		if (app.runtime.cloneCount > MaxCloneCount) return;
+		if (!proto) return null;
+		if (app.runtime.cloneCount > MaxCloneCount) return null;
 		var clone:ScratchSprite = new ScratchSprite();
 		if (proto.parent == app.stagePane)
 			app.stagePane.addChildAt(clone, app.stagePane.getChildIndex(proto));
 		else
 			app.stagePane.addChild(clone);
 
-		clone.initFrom(proto, true);
+		var returnVal:Number = clone.initFrom(proto, true);
 
 		for each (var stack:Block in clone.scripts) {
 			if (stack.op == "whenCloned") {
@@ -194,6 +194,8 @@ public class Primitives {
 			}
 		}
 		app.runtime.cloneCount++;
+
+		return returnVal;
 	}
 
 	private function primDeleteClone(b:Block):void {
